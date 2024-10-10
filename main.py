@@ -2,12 +2,11 @@ def main():
 	book_path = "books/frankenstein.txt"
 	content = get_book_content(book_path)
 	num_words = get_num_words(content)
-	dict_count_chars = get_chars_dict(content)
-	char_list = convert_dict_to_list(dict_count_chars)
-	char_list.sort(key=lambda x: x["occur"], reverse=True)
+	chars_dict = get_chars_dict(content)
+	chars_list = convert_dict_to_sorted_list(chars_dict)
 	print(f"--- Begin report of {book_path} ---")
 	print(f"A total of {num_words} words were found in the document\n")
-	for item in char_list:
+	for item in chars_list:
 		print(f"The '{item['character']}' character was found {item['occur']} times")
 	print(f"\n--- End report of {book_path} ---")
 
@@ -35,8 +34,12 @@ def get_chars_dict(text):
 				chars_dict[char_lowered] = 1
 	return chars_dict
 
-def convert_dict_to_list(dict):
-    return [{'character': char, 'occur': occur} for char, occur in dict.items()]
+def convert_dict_to_sorted_list(dict):
+	sorted_list = []
+	for ch in dict:
+		sorted_list.append({"character": ch, "occur": dict[ch]})
+	sorted_list.sort(key=lambda x: x["occur"], reverse=True)
+	return sorted_list
 
 if __name__ == "__main__":
 	main()
